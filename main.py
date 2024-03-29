@@ -65,6 +65,11 @@ while True:
         # print(fingers)
         # Center Points
         cx, cy =hand['center']
+        lmlist=hand['lmList'] #landmark list
+        """This list has pre defined points to get which finger is pointing"""
+
+        # Contraints for Drawing
+        indexFinger=lmlist[8][0],lmlist[8][1]
 
         if cy<=gestureThreshold: #If hand is above or at face level
             # Gesture 1 - Left
@@ -79,6 +84,11 @@ while True:
                 if imgNum<(len(imgPath)-1): #Changing Forward
                     imgNum+=1
                     buttonPressed=True
+
+        # Gesture 3 - Pointer (we need pointer not only above threshold but every time index and middle finger is pointed)
+        if fingers==[1,1,1,0,0]:
+            print("Point")
+            cv2.circle(CurrentImgResize,indexFinger,12,(0,0,255),cv2.FILLED)
 
     # button Pressed Iterations (Getting Back to False to Click Again)
     if buttonPressed:
