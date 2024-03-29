@@ -3,7 +3,7 @@ import os
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 
-# Variables
+# # Variables
 # Camera Width & Height
 width,height= 1200, 720
 # Folder Path
@@ -32,6 +32,9 @@ hsImg,wsImg=(120*1),(213*1)
 # if 80% surity of hands then detect as hands
 detector = HandDetector(detectionCon=0.8,maxHands=1)
 gestureThreshold=400
+buttonPressed=False
+buttonCounter=0
+buttonDelay=15 #Frames to check delay it can vary from camera to Camera
 
 
 while True:
@@ -55,7 +58,7 @@ while True:
 
 
 
-    if hands:
+    if hands and buttonPressed is False:
         hand=hands[0]
 
         fingers=detector.fingersUp(hand)
@@ -69,12 +72,20 @@ while True:
                 print("Left")
                 if imgNum>0: #Changing Backwards
                     imgNum-=1
+                    buttonPressed=True
             # Gesture 2 - Right
             if fingers==[1,0,0,0,1]:
                 print("Right")
                 if imgNum<(len(imgPath)-1): #Changing Forward
                     imgNum+=1
+                    buttonPressed=True
 
+    # button Pressed Iterations (Getting Back to False to Click Again)
+    if buttonPressed:
+        buttonCounter +=1
+        if buttonCounter>buttonDelay:
+            buttonCounter=0
+            buttonPressed=False
 
 
 
