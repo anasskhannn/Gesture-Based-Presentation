@@ -44,15 +44,19 @@ while True:
     CurrentImgResize=cv2.resize(CurrentImg,(width,height))
 
     # finding hands on img i.e webcam
-    hands, img= detector.findHands(img,flipType=False)
+    hands, img= detector.findHands(img)
 
+    if hands:
+        hand=hands[0]
 
+        fingers=detector.fingersUp(hand)
+        print(fingers)
 
 
 
     # Adding Small Webcam Image on Slide
     imgSmall=cv2.resize(img, (wsImg, hsImg))
-    # We dont know the widht and height of slide thus getting them
+    # We don't know the width and height of slide thus getting them
     hsilde, wslide, _ = CurrentImgResize.shape
 
     # putting small webcam on right side
