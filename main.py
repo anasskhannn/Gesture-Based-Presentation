@@ -5,7 +5,7 @@ import cv2
 
 # Variables
 # Camera Width & Height
-width,height= 720, 480
+width,height= 1200, 720
 # Folder Path
 folderpath="img"
 
@@ -21,7 +21,11 @@ imgPath=sorted(os.listdir(folderpath),key=len)
 # print(imgPath)
 
 # Number of Image to show
-imgNum= 3
+imgNum= 0
+
+# Small img of webcam
+# These are numbers that are actual/8
+hsImg,wsImg=(120*1),(213*1)
 
 while True:
     # Import Images
@@ -29,7 +33,18 @@ while True:
 
     fullimg=os.path.join(folderpath,imgPath[imgNum])
     CurrentImg=cv2.imread(fullimg)
-    CurrentImgResize=cv2.resize(CurrentImg,(720,480))
+    # Resizing because image too large for display
+    CurrentImgResize=cv2.resize(CurrentImg,(width,height))
+
+    # Adding Small Webcam Image on Slide
+    imgSmall=cv2.resize(img, (wsImg, hsImg))
+    # We dont know the widht and height of slide thus getting them
+    hsilde, wslide, _ = CurrentImgResize.shape
+
+    # putting small webcam on right side
+    # height 0 to height of web image
+    # widht  (actual widht of slide - width of small img) to  width of slide
+    CurrentImgResize[0:hsImg, wslide-wsImg:wslide] = imgSmall
 
     cv2.imshow("WEBCAM", img)
     cv2.imshow("Slides", CurrentImgResize)
