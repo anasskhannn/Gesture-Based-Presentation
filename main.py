@@ -36,7 +36,8 @@ detector = HandDetector(detectionCon=0.8,maxHands=1)
 while True:
     # Import Images
     sucess,img=cap.read()
-
+    # Flip the image to get hand Movement right Horizontal=1,Vertical=0
+    # img=cv2.flip(img,1 )
     fullimg=os.path.join(folderpath,imgPath[imgNum])
     CurrentImg=cv2.imread(fullimg)
     # Resizing because image too large for display
