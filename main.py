@@ -1,7 +1,7 @@
 # starting with the web cam
 import os
-
 import cv2
+from cvzone.HandTrackingModule import HandDetector
 
 # Variables
 # Camera Width & Height
@@ -27,6 +27,12 @@ imgNum= 0
 # These are numbers that are actual/8
 hsImg,wsImg=(120*1),(213*1)
 
+
+# Hand Detector
+# if 80% surity of hands then detect as hands
+detector = HandDetector(detectionCon=0.8,maxHands=1)
+
+
 while True:
     # Import Images
     sucess,img=cap.read()
@@ -35,6 +41,13 @@ while True:
     CurrentImg=cv2.imread(fullimg)
     # Resizing because image too large for display
     CurrentImgResize=cv2.resize(CurrentImg,(width,height))
+
+    # finding hands on img i.e webcam
+    hands, img= detector.findHands(img)
+
+
+
+
 
     # Adding Small Webcam Image on Slide
     imgSmall=cv2.resize(img, (wsImg, hsImg))
