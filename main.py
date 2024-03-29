@@ -67,9 +67,13 @@ while True:
             # Gesture 1 - Left
             if fingers==[1,0,0,0,0]:
                 print("Left")
+                if imgNum>0: #Changing Backwards
+                    imgNum-=1
             # Gesture 2 - Right
             if fingers==[0,0,0,0,1]:
                 print("Right")
+                if imgNum<(len(imgPath)-1): #Changing Forward
+                    imgNum+=1
 
 
 
