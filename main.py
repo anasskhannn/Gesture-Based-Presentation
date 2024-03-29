@@ -15,7 +15,9 @@ cap= cv2.VideoCapture(0)
 cap.set(3,width)
 cap.set(4,height)
 
-imgPath=os.listdir(folderpath)
+# getting Presentation Images
+# We need to sort this to 10 will be at last not after 1
+imgPath=sorted(os.listdir(folderpath),key=len)
 print(imgPath)
 
 while True:
