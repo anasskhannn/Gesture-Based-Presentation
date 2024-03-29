@@ -2,6 +2,7 @@
 import os
 import cv2
 from cvzone.HandTrackingModule import HandDetector
+import numpy as np
 
 # # Variables
 # Camera Width & Height
@@ -68,8 +69,12 @@ while True:
         lmlist=hand['lmList'] #landmark list
         """This list has pre defined points to get which finger is pointing"""
 
-        # Contraints for Drawing
-        indexFinger=lmlist[8][0],lmlist[8][1]
+        # Contraints for Easy Pointer with minimun area but full slide access to pointer
+        # indexFinger=lmlist[8][0],lmlist[8][1]
+
+        xVal=int(np.interp(lmlist[8][0],[width//2,wslide],[0,width]))
+        yVal=int(np.interp(lmlist[8][1],[150,height-150],[0,height]))
+        indexFinger=xVal,yVal
 
         if cy<=gestureThreshold: #If hand is above or at face level
             # Gesture 1 - Left
