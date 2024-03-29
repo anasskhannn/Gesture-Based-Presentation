@@ -47,7 +47,7 @@ while True:
     CurrentImgResize=cv2.resize(CurrentImg,(width,height))
 
     # finding hands on img i.e webcam
-    hands, img= detector.findHands(img)
+    hands, img= detector.findHands(img,flipType=False)
     # Threshold line to start detection (img,start,end,color,thickness)
     cv2.line(img,(0,gestureThreshold),(1400,gestureThreshold),(0,255,0),10)
 
@@ -65,12 +65,12 @@ while True:
 
         if cy<=gestureThreshold: #If hand is above or at face level
             # Gesture 1 - Left
-            if fingers==[1,0,0,0,0]:
+            if fingers==[0,0,0,0,0]:
                 print("Left")
                 if imgNum>0: #Changing Backwards
                     imgNum-=1
             # Gesture 2 - Right
-            if fingers==[0,0,0,0,1]:
+            if fingers==[1,0,0,0,1]:
                 print("Right")
                 if imgNum<(len(imgPath)-1): #Changing Forward
                     imgNum+=1
