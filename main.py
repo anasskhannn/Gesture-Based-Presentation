@@ -60,13 +60,25 @@ while True:
 
         fingers=detector.fingersUp(hand)
         # print(fingers)
+        # Center Points
+        cx, cy =hand['center']
+
+        if cy<=gestureThreshold: #If hand is above or at face level
+            # Gesture 1 - Left
+            if fingers==[1,0,0,0,0]:
+                print("Left")
+            # Gesture 2 - Right
+            if fingers==[0,0,0,0,1]:
+                print("Right")
+
+
 
 
 
     # Adding Small Webcam Image on Slide
     imgSmall=cv2.resize(img, (wsImg, hsImg))
     # We don't know the width and height of slide thus getting them
-    hsilde, wslide, _ = CurrentImgResize.shape
+    hslide, wslide, _ = CurrentImgResize.shape
 
     # putting small webcam on right side
     # height 0 to height of web image
