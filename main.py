@@ -31,6 +31,7 @@ hsImg,wsImg=(120*1),(213*1)
 # Hand Detector
 # if 80% surity of hands then detect as hands
 detector = HandDetector(detectionCon=0.8,maxHands=1)
+gestureThreshold=400
 
 
 while True:
@@ -38,19 +39,27 @@ while True:
     sucess,img=cap.read()
     # Flip the image to get hand Movement right Horizontal=1,Vertical=0
     img=cv2.flip(img,1 )
+
+    # Slide part
     fullimg=os.path.join(folderpath,imgPath[imgNum])
     CurrentImg=cv2.imread(fullimg)
-    # Resizing because image too large for display
+    # Resizing because slide too large for display
     CurrentImgResize=cv2.resize(CurrentImg,(width,height))
 
     # finding hands on img i.e webcam
     hands, img= detector.findHands(img)
+    # Threshold line to start detection (img,start,end,color,thickness)
+    cv2.line(img,(0,gestureThreshold),(1400,gestureThreshold),(0,255,0),10)
+
+
+
+
 
     if hands:
         hand=hands[0]
 
         fingers=detector.fingersUp(hand)
-        print(fingers)
+        # print(fingers)
 
 
 
