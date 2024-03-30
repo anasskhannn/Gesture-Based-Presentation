@@ -37,7 +37,7 @@ buttonPressed=False
 buttonCounter=0
 buttonDelay=15 #Frames to check delay it can vary from camera to Camera
 annotations=[[]] #to draw pointer for different place
-annotationNumber=-1 #so that after increasing it will be one
+annotationNumber=0 #so that after increasing it will be one
 annotationStart= False
 
 
@@ -76,27 +76,40 @@ while True:
         # indexFinger=lmlist[8][0],lmlist[8][1]
 
         xVal=int(np.interp(lmlist[8][0],[width//2,wslide-50],[0,width]))
-        yVal=int(np.interp(lmlist[8][1],[150,height-150],[0,height]))
+        yVal=int(np.interp(lmlist[8][1],[80,height-80],[0,height]))
         indexFinger=xVal,yVal
 
         if cy<=gestureThreshold: #If hand is above or at face level
+            annotationStart = False
             # Gesture 1 - Left
             if fingers==[0,0,0,0,0]:
                 # print("Left")
+                annotationStart = False
                 if imgNum>0: #Changing Backwards
                     imgNum-=1
                     buttonPressed=True
+                    # To reset drawing when slide is changed
+                    annotations=[[]]
+                    annotationNumber=0
+
+
             # Gesture 2 - Right
             if fingers==[1,0,0,0,1]:
-#                 print("Right")
+                # print("Right")
+                annotationStart= False
                 if imgNum<(len(imgPath)-1): #Changing Forward
                     imgNum+=1
                     buttonPressed=True
+#                     To reset drawing when slide is changed
+                    annotations=[[]]
+                    annotationNumber=0
 
         # Gesture 3 - Show Pointer (we need pointer not only above threshold but every time index and middle finger is pointed)
         if fingers==[1,1,1,0,0]:
 #             print("Point")
             cv2.circle(CurrentImgResize,indexFinger,12,(0,0,255),cv2.FILLED)
+            annotationStart= False
+
         # Gesture 4 - Draw Pointer (we need annotations to draw)
         if fingers==[1,1,0,0,0]:
 #             print("Draw")
@@ -109,6 +122,17 @@ while True:
         else:
             annotationStart=False
 
+        # Gesture 5 - Erase
+        if fingers == [1, 1, 1, 1, 0]:
+            if annotations:
+                annotations.pop(-1)
+                annotationNumber -= 1
+                buttonPressed = True
+
+
+
+    else: #when hand is lost dont draw
+        annotationStart=False
 
     # button Pressed Iterations (Getting Back to False to Click Again)
     if buttonPressed:
