@@ -36,7 +36,9 @@ gestureThreshold=400
 buttonPressed=False
 buttonCounter=0
 buttonDelay=15 #Frames to check delay it can vary from camera to Camera
-annotations=[] #to draw pointer
+annotations=[[]] #to draw pointer for different place
+annotationNumber=-1 #so that after increasing it will be one
+annotationStart= False
 
 
 while True:
@@ -80,26 +82,33 @@ while True:
         if cy<=gestureThreshold: #If hand is above or at face level
             # Gesture 1 - Left
             if fingers==[0,0,0,0,0]:
-                print("Left")
+                # print("Left")
                 if imgNum>0: #Changing Backwards
                     imgNum-=1
                     buttonPressed=True
             # Gesture 2 - Right
             if fingers==[1,0,0,0,1]:
-                print("Right")
+#                 print("Right")
                 if imgNum<(len(imgPath)-1): #Changing Forward
                     imgNum+=1
                     buttonPressed=True
 
         # Gesture 3 - Show Pointer (we need pointer not only above threshold but every time index and middle finger is pointed)
         if fingers==[1,1,1,0,0]:
-            print("Point")
+#             print("Point")
             cv2.circle(CurrentImgResize,indexFinger,12,(0,0,255),cv2.FILLED)
         # Gesture 4 - Draw Pointer (we need annotations to draw)
         if fingers==[1,1,0,0,0]:
-            print("Draw")
+#             print("Draw")
+            if annotationStart is False:
+                annotationStart=True
+                annotationNumber +=1
+                annotations.append([]) #to get different points
             cv2.circle(CurrentImgResize,indexFinger,12,(0,0,255),cv2.FILLED)
-            annotations.append(indexFinger)
+            annotations[annotationNumber].append(indexFinger)
+        else:
+            annotationStart=False
+
 
     # button Pressed Iterations (Getting Back to False to Click Again)
     if buttonPressed:
@@ -109,8 +118,9 @@ while True:
             buttonPressed=False
 
     for i in range (len(annotations)):
-        if i!=0:
-            cv2.line(CurrentImgResize,annotations[i-1],annotations[i],(0,0,255),12)
+        for j in range (len(annotations[i])):
+            if j!=0:
+                cv2.line(CurrentImgResize,annotations[i][j-1],annotations[i][j],(0,0,255),12)
 
 
 
