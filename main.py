@@ -56,7 +56,7 @@ while True:
     # finding hands on img i.e webcam
     hands, img= detector.findHands(img,flipType=False)
     # Threshold line to start detection (img,start,end,color,thickness)
-    cv2.line(img,(0,gestureThreshold),(1400,gestureThreshold),(0,255,0),10)
+    cv2.line(img,(0,gestureThreshold),(1400,gestureThreshold),(0,255,0),3)
 
 
 
@@ -80,7 +80,7 @@ while True:
         indexFinger=xVal,yVal
 
         if cy<=gestureThreshold: #If hand is above or at face level
-            annotationStart = False
+            # annotationStart = False
             # Gesture 1 - Left
             if fingers==[0,0,0,0,0]:
                 # print("Left")
@@ -107,7 +107,7 @@ while True:
         # Gesture 3 - Show Pointer (we need pointer not only above threshold but every time index and middle finger is pointed)
         if fingers==[1,1,1,0,0]:
 #             print("Point")
-            cv2.circle(CurrentImgResize,indexFinger,12,(0,0,255),cv2.FILLED)
+            cv2.circle(CurrentImgResize,indexFinger,9,(0,0,255),cv2.FILLED)
             annotationStart= False
 
         # Gesture 4 - Draw Pointer (we need annotations to draw)
@@ -117,7 +117,7 @@ while True:
                 annotationStart=True
                 annotationNumber +=1
                 annotations.append([]) #to get different points
-            cv2.circle(CurrentImgResize,indexFinger,12,(0,0,255),cv2.FILLED)
+            cv2.circle(CurrentImgResize,indexFinger,9,(0,0,255),cv2.FILLED)
             annotations[annotationNumber].append(indexFinger)
         else:
             annotationStart=False
@@ -125,9 +125,10 @@ while True:
         # Gesture 5 - Erase
         if fingers == [1, 1, 1, 1, 0]:
             if annotations:
-                annotations.pop(-1)
-                annotationNumber -= 1
-                buttonPressed = True
+                if annotationNumber>=0:
+                    annotations.pop(-1)
+                    annotationNumber -= 1
+                    buttonPressed = True
 
 
 
@@ -144,7 +145,7 @@ while True:
     for i in range (len(annotations)):
         for j in range (len(annotations[i])):
             if j!=0:
-                cv2.line(CurrentImgResize,annotations[i][j-1],annotations[i][j],(0,0,255),12)
+                cv2.line(CurrentImgResize,annotations[i][j-1],annotations[i][j],(0,0,255),9)
 
 
 
@@ -159,7 +160,7 @@ while True:
     # widht  (actual widht of slide - width of small img) to  width of slide
     CurrentImgResize[0:hsImg, wslide-wsImg:wslide] = imgSmall
 
-    cv2.imshow("WEBCAM", img)
+    # cv2.imshow("WEBCAM", img)
     cv2.imshow("Slides", CurrentImgResize)
     key= cv2.waitKey(1)
     # Adding if to close webcam and break the loop by pressing "Q"
